@@ -5,3 +5,4 @@ A fullstack web app project
 - Node.js
 - Bootstrap
 - MongoDB
+- Cloudinary
