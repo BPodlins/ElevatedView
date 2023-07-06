@@ -3,7 +3,8 @@ const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
 
-mongoose.connect('mongodb://127.0.0.1:27017/elev-view', {
+
+mongoose.connect('someDBUrl', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

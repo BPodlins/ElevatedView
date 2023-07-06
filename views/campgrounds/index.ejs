@@ -6,9 +6,9 @@
 <div class="card mb-3" mb-3>
     <div class="row">
         <div class="col-md-4">
-            <%if(campground.images.length) {%>
-            <img class="img-fluid" alt="" src="<%=campground.images[0].url%>">
-            <% }else {%>
+            <% if (campground.images.length) { %>
+                <img crossorigin="anonymous" class="img-fluid" alt="" src="<%= campground.images[0].url %>">
+            <% } else { %>
             <img class="img-fluid" alt=""
                 src="https://res.cloudinary.com/drwr2gaks/image/upload/v1688600463/ElevWiev/vincent-wachowiak-tgAvdoV0_V0-unsplash_b35r6r.jpg">
             <% } %>
