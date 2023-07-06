@@ -1,6 +1,5 @@
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheets/stars.css">
-
 <div class="row">
     <div class="col-6">
         <div id="campgroundCarousel" class="carousel slide" data-ride="carousel">
@@ -30,15 +29,12 @@
                 <p class="card-text"><%= campground.description%></p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item text-muted"><%= campground.location %></li>
-                <% if (campground && campground.author && campground.author.username) { %>
-                  <li class="list-group-item">Submitted by <%= campground.author.username %></li>
-                <% } else { %>
-                  <li class="list-group-item">Submitted by N/A</li>
-                <% } %>
-                <li class="list-group-item">$<%= campground.price %>/night</li>
-              </ul>
-              <% if (currentUser && campground && campground.author && campground.author.equals(currentUser._id)) { %>            <div class="card-body">
+                <li class="list-group-item text-muted"><%= campground.location%></li>
+                <li class="list-group-item">Submitted by <%= campground.author.username%></li>
+                <li class="list-group-item">$<%= campground.price%>/night</li>
+            </ul>
+            <%  if( currentUser && campground.author.equals(currentUser._id))  {%>
+            <div class="card-body">
                 <a class="card-link btn btn-info" href="/campgrounds/<%=campground._id%>/edit">Edit</a>
                 <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
                     <button class="btn btn-danger">Delete</button>
@@ -52,6 +48,8 @@
 
     </div>
     <div class="col-6">
+        <div id='map'></div>
+
         <% if(currentUser){ %>
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
@@ -84,20 +82,28 @@
         </form>
         <% } %>
         <% for(let review of campground.reviews) { %>
-            <div class="card mb-3 ">
-                <div class="card-body">
-                    <h5 class="card-title"> <%= review.author.username%></h5>
-                    <p class="starability-result" data-rating="<%=review.rating%>">
-                        Rated: <%= review.rating %> stars
-                    </p>
-                    <p class="card-text">Review: <%= review.body %></p>
-                    <%  if( currentUser && review && review.author && review.author.equals(currentUser._id))  {%>
-                    <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                    <% } %>
-                </div>
+        <div class="card mb-3 ">
+            <div class="card-body">
+                <h5 class="card-title"> <%= review.author.username%></h5>
+                <p class="starability-result" data-rating="<%=review.rating%>">
+                    Rated: <%= review.rating %> stars
+                </p>
+                <!-- <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username%></h6> -->
+                <p class="card-text">Review: <%= review.body %></p>
+                <%  if( currentUser && review.author.equals(currentUser._id))  {%>
+                <form action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+                <% } %>
             </div>
+        </div>
         <% } %>
     </div>
 </div>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const campground = <%- JSON.stringify(campground) %>
+</script>
+
+<script src="/javascripts/showPageMap.js"></script>

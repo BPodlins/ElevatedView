@@ -15,33 +15,51 @@ mongoose.connect('mongodb://127.0.0.1:27017/elev-view', {
         console.log(err)
     })
 
-const db = mongoose.connection;
+    const db = mongoose.connection;
 
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-    console.log("Database connected");
-});
-
-const sample = array => array[Math.floor(Math.random() * array.length)];
-
-
-const seedDB = async () => {
-    await Campground.deleteMany({});
-    for (let i = 0; i < 50; i++) {
-        const random1000 = Math.floor(Math.random() * 1000);
-        const price = Math.floor(Math.random() *20) + 10
-        const camp = new Campground({
-            author: '64a2cd835191850c3e594f4f',
-            location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'http://source.unsplash.com/collection/45085026',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam aut ullam laborum reiciendis saepe, sint, esse doloremque ad voluptas corrupti perferendis beatae blanditiis quis eum sed delectus enim mollitia maxime. Explicabo debitis reprehenderit aperiam quasi eaque id molestias quia et iusto cum ipsa quaerat corrupti sequi nihil architecto earum dignissimos officia, sunt, quas unde ut assumenda impedit sapiente sit! Delectus. Sunt expedita laborum consectetur porro maxime fugiat tenetur deleniti a aliquid molestias quod, dignissimos placeat accusamus dicta, doloribus consequatur earum distinctio voluptatem quisquam? Asperiores ex at accusantium blanditiis nobis saepe.',
-            price
-        })
-        await camp.save();
+    db.on("error", console.error.bind(console, "connection error:"));
+    db.once("open", () => {
+        console.log("Database connected");
+    });
+    
+    const sample = array => array[Math.floor(Math.random() * array.length)];
+    
+    
+    const seedDB = async () => {
+        await Campground.deleteMany({});
+        for (let i = 0; i < 125; i++) {
+            const random1000 = Math.floor(Math.random() * 1000);
+            const price = Math.floor(Math.random() * 20) + 10;
+            const camp = new Campground({
+                author: '64a2cd835191850c3e594f4f',
+                location: `${cities[random1000].city}, ${cities[random1000].state}`,
+                title: `${sample(descriptors)} ${sample(places)}`,
+                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam dolores vero perferendis laudantium, consequuntur voluptatibus nulla architecto, sit soluta esse iure sed labore ipsam a cum nihil atque molestiae deserunt!',
+                price,
+                geometry: {
+                    type: "Point",
+                    coordinates: [
+                        cities[random1000].longitude,
+                        cities[random1000].latitude
+                ]
+                },
+                images: [
+                    {
+                        url: 'https://res.cloudinary.com/drwr2gaks/image/upload/v1688600471/ElevWiev/adrien-brunat-X2aW2rULaz0-unsplash_rheme2.jpg',
+                        filename: 'YelpCamp/ahfnenvca4tha00h2ubt'
+                    },
+                    {
+                        url: 'https://res.cloudinary.com/drwr2gaks/image/upload/v1688600464/ElevWiev/jenny-hill-1O-zzgGPEas-unsplash_cgqvv8.jpg',
+                        filename: 'YelpCamp/ruyoaxgf72nzpi4y6cdi'
+                    }
+                ]
+            })
+            await camp.save();
+        }
     }
-}
+    
+    seedDB().then(() => {
+        mongoose.connection.close();
+    })
 
-seedDB().then(() => {
-    mongoose.connection.close();
-})
+    
