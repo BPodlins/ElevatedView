@@ -4,5 +4,6 @@ A fullstack web app project
 - JavaScript
 - Node.js
 - Bootstrap
-- MongoDB
+- MongoDB Atlas
 - Cloudinary
+- Render
